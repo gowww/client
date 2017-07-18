@@ -169,7 +169,7 @@ func (r *request) DisableRedirect() Request {
 	return r
 }
 
-// ForceMultipart force a "multipart/form-data" response, even with no files.
+// ForceMultipart forces a "multipart/form-data" response, even with no files.
 func (r *request) ForceMultipart() Request {
 	if r.err != nil {
 		return r
