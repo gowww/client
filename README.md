@@ -73,3 +73,16 @@ jsres := new(struct{
 })
 res.JSON(jsres)
 ```
+
+#### Debugging
+
+Debugging a request is pretty simple with [Response.Dump](https://godoc.org/github.com/gowww/client#Response.Dump).  
+It prints the request info, writes the body in a file and opens it in your browser.
+
+```Go
+res, err := Get("http://example.com").Do()
+if err != nil {
+	panic(err)
+}
+res.Dump()
+```
