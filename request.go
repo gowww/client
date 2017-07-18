@@ -3,6 +3,7 @@ package client
 
 import (
 	"bytes"
+	"fmt"
 	"io"
 	"mime/multipart"
 	"net/http"
@@ -224,4 +225,29 @@ func (r *request) Do() (*Response, error) {
 		res, err = http.DefaultClient.Do(req)
 	}
 	return &Response{Response: res}, err
+}
+
+func (r *request) String() string {
+	s := r.method + " " + r.url + "\n"
+
+	if len(r.header) > 0 {
+		s += "\tHeader:\n"
+		s += "\t\tContent-Type: "
+		if r.body == nil {
+			s += "application/x-www-form-urlencoded"
+		} else {
+			s += r.body.w.FormDataContentType()
+		}
+		s += "\n"
+		for k, v := range r.header {
+			s += "\t\t" + k + ": " + strings.Join(v, ", ") + "\n"
+		}
+	}
+	if len(r.cookies) > 0 {
+		s += "\tCookies:\n"
+		for _, v := range r.cookies {
+			s += "\t\t" + fmt.Sprint(v)
+		}
+	}
+	return s
 }
