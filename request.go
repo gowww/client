@@ -229,19 +229,16 @@ func (r *request) Do() (*Response, error) {
 
 func (r *request) String() string {
 	s := r.method + " " + r.url + "\n"
-
-	if len(r.header) > 0 {
-		s += "\tHeader:\n"
-		s += "\t\tContent-Type: "
-		if r.body == nil {
-			s += "application/x-www-form-urlencoded"
-		} else {
-			s += r.body.w.FormDataContentType()
-		}
-		s += "\n"
-		for k, v := range r.header {
-			s += "\t\t" + k + ": " + strings.Join(v, ", ") + "\n"
-		}
+	s += "\tHeader:\n"
+	s += "\t\tContent-Type: "
+	if r.body == nil {
+		s += "application/x-www-form-urlencoded"
+	} else {
+		s += r.body.w.FormDataContentType()
+	}
+	s += "\n"
+	for k, v := range r.header {
+		s += "\t\t" + k + ": " + strings.Join(v, ", ") + "\n"
 	}
 	if len(r.cookies) > 0 {
 		s += "\tCookies:\n"
