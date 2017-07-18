@@ -36,6 +36,7 @@ type Request interface {
 	DisableRedirect() Request
 	ForceMultipart() Request
 	Do() (*Response, error)
+	String() string
 }
 
 type request struct {
