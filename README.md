@@ -24,7 +24,10 @@ Use [Get](https://godoc.org/github.com/gowww/client#Get), [Post](https://godoc.o
 Options are chainable:
 
 ```Go
-file, _ := os.Open("data/one.txt")
+file, err := os.Open("data/one.txt")
+if err != nil {
+	panic(err)
+}
 defer file.Close()
 
 req := client.Post("http://example.com").

@@ -9,7 +9,10 @@ import (
 )
 
 func Example() {
-	file, _ := os.Open("data/one.txt")
+	file, err := os.Open("data/one.txt")
+	if err != nil {
+		panic(err)
+	}
 	defer file.Close()
 
 	req := client.Post("http://example.com").
@@ -24,7 +27,10 @@ func Example() {
 		OpenFile("picture", "one.png").
 		OpenFile("picture", "two.png")
 
-	res, _ := req.Do()
+	res, err := req.Do()
+	if err != nil {
+		panic(err)
+	}
 	defer res.Close()
 
 	fmt.Println(res)
