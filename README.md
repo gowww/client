@@ -83,7 +83,7 @@ Debugging a request is pretty simple with [Response.Dump](https://godoc.org/gith
 It prints the request info, writes the body in a file and opens it in your browser.
 
 ```Go
-res, err := Get("http://example.com").Do()
+res, err := client.Get("http://example.com").Do()
 if err != nil {
 	panic(err)
 }
