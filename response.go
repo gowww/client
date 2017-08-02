@@ -13,6 +13,7 @@ import (
 	"os"
 	"os/exec"
 	"runtime"
+	"strconv"
 	"strings"
 	"time"
 )
@@ -117,16 +118,36 @@ func openFile(url string) error {
 func (r *Response) String() string {
 	s := r.Status + " - " + r.Proto + " " + r.Request.Method + " " + r.Request.URL.String() + "\n"
 	if len(r.Header) > 0 {
-		s += "\tHeader:\n"
+		s += "\tHeader\n"
+		keys := make([]string, 0, len(r.Header))
+		for k := range r.Header {
+			if k == "Set-Cookie" {
+				continue
+			}
+			keys = append(keys, k)
+		}
+		keyLen := stringMaxLen(keys)
 		for k, v := range r.Header {
-			s += "\t\t" + k + ": " + strings.Join(v, ", ") + "\n"
+			if k == "Set-Cookie" {
+				continue
+			}
+			s += fmt.Sprintf("\t\t%"+strconv.Itoa(keyLen)+"s  %s\n", k, strings.Join(v, ", "))
 		}
 	}
 	if len(r.Cookies()) > 0 {
-		s += "\tCookies:\n"
+		s += "\tCookies\n"
 		for _, v := range r.Cookies() {
 			s += "\t\t" + fmt.Sprint(v)
 		}
 	}
 	return s
+}
+
+func stringMaxLen(ss []string) (l int) {
+	for _, s := range ss {
+		if len(s) > l {
+			l = len(s)
+		}
+	}
+	return
 }
