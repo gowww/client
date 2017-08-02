@@ -84,7 +84,7 @@ func (r *Response) Dump() {
 
 	if strings.HasPrefix(r.Header.Get("Content-Type"), "text/html") {
 		buf := bytes.NewBufferString("<pre style=\"background:#000;color:#0f0;font:13px/1.2 monospace;padding:20px\">")
-		log.New(buf, "", log.LstdFlags).Println("-", r)
+		log.New(buf, "", log.LstdFlags).Print("- ", r)
 		buf.WriteString("</pre>")
 		if _, err = io.Copy(f, buf); err != nil {
 			panic(err)
