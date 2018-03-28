@@ -239,7 +239,7 @@ func (r *request) Do() (*Response, error) {
 	if r.noRedir {
 		res, err = clientNoRedirect.Do(req)
 	} else {
-		res, err = http.DefaultClient.Do(req)
+		res, err = client.Do(req)
 	}
 	return &Response{Response: res}, err
 }
