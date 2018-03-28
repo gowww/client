@@ -10,12 +10,28 @@ import (
 	"net/url"
 	"os"
 	"strings"
+	"time"
 )
 
-var httpNoRedirectClient = &http.Client{
-	CheckRedirect: func(_ *http.Request, _ []*http.Request) error {
-		return http.ErrUseLastResponse
-	},
+var (
+	defaultTimeout = 30 * time.Second
+
+	client = &http.Client{
+		Timeout: defaultTimeout,
+	}
+
+	clientNoRedirect = &http.Client{
+		Timeout: defaultTimeout,
+		CheckRedirect: func(_ *http.Request, _ []*http.Request) error {
+			return http.ErrUseLastResponse
+		},
+	}
+)
+
+// Timeout sets the global client request timeout. Default is 30 seconds.
+func Timeout(t time.Duration) {
+	client.Timeout = t
+	clientNoRedirect.Timeout = t
 }
 
 type body struct {
@@ -221,7 +237,7 @@ func (r *request) Do() (*Response, error) {
 
 	var res *http.Response
 	if r.noRedir {
-		res, err = httpNoRedirectClient.Do(req)
+		res, err = clientNoRedirect.Do(req)
 	} else {
 		res, err = http.DefaultClient.Do(req)
 	}
